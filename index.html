@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Time Since Date Calculator</title>
+	<style>
+		/* Center the interface on the page */
+		body {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			margin: 0;
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+		}
+		h1, p, input, button, #result {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			font-size: 24px;
+			color: #333;
+			margin: 8px;
+		}
+		button {
+			padding: 4px 8px;
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+		button:hover {
+			background-color: #0069d9;
+		}
+		.highlight {
+			font-size: 36px;
+			color: #007bff;
+			font-weight: bold;
+		}
+    #result {
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<h1 style="font-size: 36px;">Time Since Date Calculator</h1>
+	<p>Enter a date to calculate the time elapsed since that date:</p>
+	<input type="date" id="start-date">
+	<input type="time" id="start-time">
+	<button onclick="calculateTime()">Calculate</button>
+	<p id="result"></p>
+	<script>
+		function calculateTime() {
+			// Get the date and time entered by the user
+			var startDate = document.getElementById("start-date").value;
+			var startTime = document.getElementById("start-time").value;
+			if (!startDate) {
+				alert("Please enter a date.");
+				return;
+			}
+			startDate = new Date(startDate);
+			if (startTime !== "") {
+				startDate.setHours(startTime.substr(0,2));
+				startDate.setMinutes(startTime.substr(3,2));
+			} else {
+				// Use the current time as the default reference if no time is entered
+				startDate.setHours(new Date().getHours());
+				startDate.setMinutes(new Date().getMinutes());
+			}
+			// Get the current date and time
+			var currentDate = new Date();
+			// Calculate the difference in milliseconds between the two dates
+			var timeDiff = currentDate.getTime() - startDate.getTime();
+			// Convert the time difference from milliseconds to seconds, minutes, hours, and days
+			var seconds = Math.floor(timeDiff / 1000);
+			var minutes = Math.floor(seconds / 60);
+			var hours = Math.floor(minutes / 60);
+			var days = Math.floor(hours / 24);
+			// Format the output to emphasize the key aspects
+			var result = "Time elapsed since " + startDate.toLocaleString() + ":<br>" +
+				"<span class='highlight'>" + days + "</span> days, " +
+				"<span class='highlight'>" + hours % 24 + "</span> hours, " +
+				"<span class='highlight'>" + minutes % 60 + "</span> minutes, " +
+				"<span class='highlight'>" + seconds % 60 + "</span> seconds.";
+			// Display the result
+			document.getElementById("result").innerHTML = result;
+		}
+	</script>
+</body>
+</html>
